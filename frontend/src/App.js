@@ -1,44 +1,115 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import {
+    EuiPageTemplate,
+    EuiButton,
+    EuiFlexGroup,
+    EuiFlexItem,
+    EuiFieldText,
+    EuiButtonEmpty,
+    EuiToolTip,
+    EuiSpacer,
+    EuiButtonIcon,
+  } from '@elastic/eui';
 
-import moment from 'moment';
-
-// import Header from './Header';
-// import Main from './Main';
 import './App.css';
 import RequireAuth from './auth/components/RequireAuth';
-import { store } from './index';
-// import { CLEAR_ERRORS } from '../actions/types';
+import { 
+    logoutUser,
+} from './auth/actions';
+import TaskList from './tasks/components/TaskList';
+import { 
+    loadTasks, 
+    addTask,
+    finishTask,
+    selectTask,
+    toggleFinished,
+} from './tasks/actions';
+import TaskEdit from './tasks/components/TaskEdit';
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            thisYear: moment().year(),
-        }
-    }
-
-    renderErrors() {
-        return this.props.errors.map((err, val) => {
-            return (<div key={val}><i style={{ color: 'red' }}>{err}</i><br /></div>);
-        });
-    }
-
-    hideErrorContainer() {
-        // store.dispatch({ type: CLEAR_ERRORS });
-    }
-
-    render() {
-        return (
-            <div>tasks</div>
-        );
-    }
-}
+const App = (props) => {
+    const [taskTitle, setTaskTitle] = useState("");
+        
+    useEffect(() => {props.loadTasks()});
+    
+    return (
+        <EuiPageTemplate
+          restrictWidth={true}
+          template="default"
+          pageHeader={{
+            iconType: 'visTable',
+            pageTitle: 'My tasks',
+            rightSideItems: [<EuiButton onClick={props.logoutUser}>Logout</EuiButton>],
+          }}>
+          <EuiFlexGroup justifyContent="spaceAround">
+            <EuiFlexItem>
+                <EuiFlexGroup justifyContent="spaceAround">
+                    <EuiFlexItem>
+                        <EuiFieldText
+                            autoFocus="autofocus"
+                            placeholder="Add task"
+                            fullWidth={true}
+                            value={taskTitle}
+                            onChange={e => setTaskTitle(e.target.value)}
+                            append={
+                                <EuiToolTip content="Click to add task">
+                                    <EuiButtonEmpty 
+                                        size="l"
+                                        isDisabled={!taskTitle && taskTitle.length < 1}
+                                        onClick={() => {
+                                            props.addTask(taskTitle);
+                                            setTaskTitle('');
+                                        }}
+                                    >
+                                        Add task
+                                    </EuiButtonEmpty>
+                                </EuiToolTip>
+                            }
+                        />
+                    </EuiFlexItem>
+                    <EuiFlexItem grow={false}>
+                        <EuiToolTip
+                            content={props.showFinished ? 'Hide finished' : 'Show finished'}
+                        >
+                            <EuiButtonIcon
+                                aria-label={'Show/Hide finished tasks'}
+                                aria-pressed={props.showFinished}
+                                color={props.showFinished ? 'primary' : 'subdued'}
+                                size='m'
+                                iconType='returnKey'
+                                onClick={() => {
+                                    props.toggleFinished()
+                                }}
+                            />
+                        </EuiToolTip>
+                    </EuiFlexItem>
+                </EuiFlexGroup>
+                <EuiSpacer />
+                <TaskList 
+                    tasks={props.tasks} 
+                    onFinishTask={props.finishTask}
+                    onSelectTask={props.selectTask}
+                    showFinished={props.showFinished}
+                />
+                <TaskEdit />
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </EuiPageTemplate>
+    );
+};
 
 function mapStateToProps(state) {
     return {
-        // errors: state.core.errors
+        tasks: state.task.tasks,
+        showFinished: state.task.showFinished
     };
 }
 
-export default connect(mapStateToProps)(RequireAuth(App));
+export default connect(mapStateToProps, {
+    loadTasks,
+    addTask,
+    finishTask,
+    selectTask,
+    toggleFinished,
+    logoutUser,
+})(RequireAuth(App));

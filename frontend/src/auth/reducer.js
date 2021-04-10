@@ -9,7 +9,7 @@ const initialState = {
     error: null,
 };
 
-export default function (state = initialState, action) {
+export default function rott_reducer (state = initialState, action) {
     switch (action.type) {
         case AUTH_USER: return { ...state, authenticated: true, error: null };
         case UNAUTH_USER: return { ...state, authenticated: false, error: null };

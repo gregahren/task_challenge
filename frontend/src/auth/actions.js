@@ -4,17 +4,19 @@ import {
     UNAUTH_USER,
     AUTH_ERROR,
 } from './action_types';
+import history from '../utils/history';
 
 export function loginUser(values, dispatch, props) {
     return axios.post(`/auth/login`, values).then(response => {
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('name', JSON.stringify(response.data.name));
             dispatch({ type: AUTH_USER });
-            props.history.push('/');
+            history.push('/');
         }).catch((err) => {
             if (err.response) {
+                debugger;
                 if (err.response.status === 401) {
-                    dispatch(authError(err.response.message));
+                    dispatch(authError(err.response.data.message));
                 }
             } else {
                 dispatch(authError(`${err.message}. Cannot log in.`));
@@ -27,11 +29,11 @@ export function registerUser(values, dispatch, props) {
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('name', JSON.stringify(response.data.name));
             dispatch({ type: AUTH_USER });
-            props.history.push('/');
+            history.push('/');
         }).catch((err) => {
             if (err.response) {
                 if (err.response.status === 401) {
-                    dispatch(authError(err.response.message));
+                    dispatch(authError(err.response.data.message));
                 }
             } else {
                 dispatch(authError(`${err.message}. Cannot log in.`));
@@ -40,9 +42,12 @@ export function registerUser(values, dispatch, props) {
 }
 
 export function logoutUser() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    return { type: UNAUTH_USER };
+    return function (dispatch) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        dispatch({ type: UNAUTH_USER });
+        history.push('/login');
+    };
 }
 
 export function authError(error) {

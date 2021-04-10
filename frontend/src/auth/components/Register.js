@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 import { withRouter, Redirect } from 'react-router-dom';
-import { renderEuiFieldText } from '../../utils/renderEuiField';
+import { renderEuiFieldPassword, renderEuiFieldText } from '../../utils/renderEuiField';
 import { required, email, minLength } from '../../utils/validators';
 import {
     EuiPage,
@@ -19,7 +19,6 @@ import {
 
 import { registerUser } from '../actions';
 import history from '../../utils/history';
-import { store } from '../../../src';
 import '../css/Login.css';
 
 const minLength6 = minLength(6);
@@ -35,7 +34,7 @@ const Register = props => {
         return <Redirect to='/' />;
     }
 
-    const { handleSubmit, pristine, reset, submitting } = props;
+    const { handleSubmit, submitting } = props;
 
     return (
         <div className="Login">
@@ -59,6 +58,7 @@ const Register = props => {
                                     placeholder="Email"
                                     validate={[required, email]}
                                     component={renderEuiFieldText}
+                                    icon="user"
                                 />
                                 <Field
                                     label="Full name"
@@ -71,10 +71,10 @@ const Register = props => {
                                 <Field
                                     label="Password"
                                     name="password"
-                                    type="password"
                                     placeholder="Password"
                                     validate={[required, minLength6]}
-                                    component={renderEuiFieldText}
+                                    type='dual'
+                                    component={renderEuiFieldPassword}
                                 />
 
                                 <br></br>

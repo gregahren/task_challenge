@@ -45,7 +45,7 @@ def generate_token(user):
         return {
             'status': False,
             'message': 'Some error occurred. Please try again.'
-        }, 401
+        }, 403
 
 
 def save_changes(data):

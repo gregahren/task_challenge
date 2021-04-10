@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import history from '../../utils/history';
 
-export default function(ComposedComponent) {
+export default function RequireAuth(ComposedComponent) {
   class Authentication extends Component {
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
       if (!this.props.authenticated) {
-        this.props.history.push("/login");
+        history.push("/login");
       }
     }
 
-    componentWillUpdate(nextProps) {
+    UNSAFE_componentWillUpdate(nextProps) {
       if (!nextProps.authenticated) {
-        this.props.history.push("/login");
+        history.push("/login");
       }
     }
 
@@ -30,5 +30,5 @@ export default function(ComposedComponent) {
     return { authenticated: state.auth.authenticated };
   }
 
-  return withRouter(connect(mapStateToProps)(Authentication));
+  return connect(mapStateToProps)(Authentication);
 }

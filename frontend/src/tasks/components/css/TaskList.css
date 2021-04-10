@@ -1,0 +1,10 @@
+.TaskList__Task {
+    border-bottom: .5px solid #eee;
+    padding: 12px 0 12px 5px;
+    font-size: 20;
+    cursor: pointer;
+}
+
+.TaskList__Task:hover {
+    background-color: rgba(25,152,112,.07058824);
+}

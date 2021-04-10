@@ -45,9 +45,9 @@ class Auth:
                     'message': 'Successfully logged out.'
                 }, 200
             else:
-                api.abort(401, message="Provide a valid auth token.")
+                api.abort(403, message="Provide a valid auth token.")
         else:
-            api.abort(401, message="Provide a valid auth token.")
+            api.abort(403, message="Provide a valid auth token.")
 
     @staticmethod
     def get_logged_in_user(new_request):
@@ -67,6 +67,6 @@ class Auth:
                     }
                 }, 200
 
-            api.abort(401, message="Provide a valid auth token.")
+            api.abort(403, message="Provide a valid auth token.")
         else:
-            api.abort(401, message="Provide a valid auth token.")
+            api.abort(403, message="Provide a valid auth token.")

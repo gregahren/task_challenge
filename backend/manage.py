@@ -5,8 +5,6 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
 from app import blueprint, create_app, db
-from app.admin.model import user
-from app.tasks.model import task
 
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
 app.register_blueprint(blueprint)

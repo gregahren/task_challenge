@@ -25,7 +25,7 @@ class UserLogin(Resource):
 
 
 @ns.route('/logout')
-@ns.response(401, "Provide a valid auth token.")
+@ns.response(403, "Provide a valid auth token.")
 class Logout(Resource):
     """
     Logout Resource
@@ -54,6 +54,6 @@ class Logout(Resource):
                     }
                 }
                 return response_object, 200
-            api.abort(401, message="Provide a valid auth token.")
+            api.abort(403, message="Provide a valid auth token.")
         else:
-            api.abort(401, message="Provide a valid auth token.")
+            api.abort(403, message="Provide a valid auth token.")

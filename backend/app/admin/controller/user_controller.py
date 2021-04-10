@@ -10,10 +10,10 @@ _user = UserDto.user
 
 
 @ns.route('/')
-@ns.response(401, "Provide a valid auth token.")
+@ns.response(403, "Provide a valid auth token.")
 class UserList(Resource):
     @ns.doc('Get all users')
-    @ns.marshal_list_with(_user, envelope='data')
+    @ns.marshal_list_with(_user)
     @auth_required
     def get(self):
         """List all registered users"""
@@ -32,7 +32,7 @@ class UserList(Resource):
 @ns.route('/<id>')
 @ns.param('id', 'The User identifier')
 @ns.response(404, 'User not found.')
-@ns.response(401, "Provide a valid auth token.")
+@ns.response(403, "Provide a valid auth token.")
 class User(Resource):
     @ns.doc('Get user')
     @ns.marshal_with(_user)

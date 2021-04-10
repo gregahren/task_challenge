@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm } from 'redux-form';
 import { withRouter, Redirect } from 'react-router-dom';
-import { renderEuiFieldText } from '../../utils/renderEuiField';
-import { required, email, minLength } from '../../utils/validators';
+import { renderEuiFieldPassword, renderEuiFieldText } from '../../utils/renderEuiField';
+import { required, email } from '../../utils/validators';
 import {
     EuiPage,
     EuiPageContent,
@@ -19,11 +19,7 @@ import {
 
 import { loginUser } from '../actions';
 import history from '../../utils/history';
-import { store } from '../../../src';
 import '../css/Login.css';
-// import { CLEAR_ERRORS } from '../../../core/actions/types';
-
-const minLength6 = minLength(6);
 
 function goToRegister() {
     history.push("/register");
@@ -33,11 +29,10 @@ const Login = props => {
     const { authenticated } = props;
 
     if (authenticated) {
-        // store.dispatch({ type: CLEAR_ERRORS });
         return <Redirect to='/' />;
     }
 
-    const { handleSubmit, pristine, reset, submitting } = props;
+    const { handleSubmit, submitting } = props;
 
     return (
         <div className="Login">
@@ -51,7 +46,7 @@ const Login = props => {
                             <EuiForm
                                 component="form"
                                 onSubmit={handleSubmit}
-                                isInvalid={props.isValid}
+                                isInvalid={props.errorMessage}
                                 error={props.errorMessage}
                             >
                                 <Field
@@ -61,14 +56,15 @@ const Login = props => {
                                     placeholder="Email"
                                     validate={[required, email]}
                                     component={renderEuiFieldText}
+                                    icon="user"
                                 />
                                 <Field
                                     label="Password"
                                     name="password"
-                                    type="password"
                                     placeholder="Password"
+                                    type='dual'
                                     validate={[required]}
-                                    component={renderEuiFieldText}
+                                    component={renderEuiFieldPassword}
                                 />
 
                                 <br></br>
