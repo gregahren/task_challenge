@@ -32,7 +32,7 @@ services:
    db:
       image: postgres
       container_name: postgres
-      restart: unless-stopped
+      restart: always
       environment:
          - POSTGRES_DB=sythesia_tasks
          - POSTGRES_USER=postgres

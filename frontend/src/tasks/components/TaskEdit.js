@@ -102,7 +102,7 @@ const TaskEdit = (props) => {
                     <p>You&rsquo;re about to delete task.</p>
                     <p>Are you sure you want to do this?</p>
                 </EuiConfirmModal>
-            };
+            }
         </>
     );
 };

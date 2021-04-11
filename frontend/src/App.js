@@ -30,7 +30,9 @@ import TaskEdit from './tasks/components/TaskEdit';
 const App = (props) => {
     const [taskTitle, setTaskTitle] = useState("");
         
-    useEffect(() => {props.loadTasks()});
+    useEffect(() => {
+        props.loadTasks()
+    }, []);
     
     return (
         <EuiPageTemplate
@@ -43,7 +45,7 @@ const App = (props) => {
           }}>
           <EuiFlexGroup justifyContent="spaceAround">
             <EuiFlexItem>
-                <EuiFlexGroup justifyContent="spaceAround">
+                <EuiFlexGroup justifyContent="spaceAround" responsive={false}>
                     <EuiFlexItem>
                         <EuiFieldText
                             autoFocus="autofocus"

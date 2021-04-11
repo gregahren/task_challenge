@@ -15,7 +15,7 @@ class TaskList(Resource):
     @ns.marshal_list_with(TaskDto.task, envelope='data')
     @auth_required
     def get(self, user):
-        """List all registered users"""
+        """List all users tasks"""
         return get_tasks(user)
 
     @ns.doc('Create task')

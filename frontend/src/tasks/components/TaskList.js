@@ -3,6 +3,7 @@ import {
     EuiFlexGroup,
     EuiFlexItem,
     EuiToolTip,
+    EuiEmptyPrompt,
  } from '@elastic/eui';
 
  import './css/TaskList.css';
@@ -13,7 +14,7 @@ const TaskList = ({tasks, onSelectTask, onFinishTask, showFinished}) => (
             {tasks && tasks.map((task, index) => 
                 { return ((!task.completed || (showFinished && task.completed)) && 
                 <li className='TaskList__Task' onClick={() => onSelectTask(task, index)} key={task.private_id}>
-                    <EuiFlexGroup justifyContent='center' alignItems='center'>
+                    <EuiFlexGroup justifyContent='center' alignItems='center' responsive={false}>
                         <EuiFlexItem grow={false}>
                             <EuiToolTip content={task.completed ? null : 'Finish task'}>
                                 <EuiButtonIcon
@@ -33,6 +34,17 @@ const TaskList = ({tasks, onSelectTask, onFinishTask, showFinished}) => (
                     </EuiFlexGroup>
                 </li>)}
             )}
+            {tasks && tasks.length < 1 && 
+                <EuiEmptyPrompt
+                    iconType="editorStrike"
+                    title={<h2>You have no tasks</h2>}
+                    body={
+                        <p>
+                            It seems you have no tasks to finish.
+                        </p>
+                    }
+                />
+            }
         </ul>
     </>
 );

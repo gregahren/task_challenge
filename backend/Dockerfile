@@ -6,4 +6,4 @@ RUN pip install -r requirements.txt --no-cache-dir
 WORKDIR /api
 ADD . /api
 RUN chmod 755 /api/entrypoint.sh
-ENTRYPOINT ["sh", "/api/entrypoint.sh"]
+ENTRYPOINT ["bash", "/api/entrypoint.sh"]
